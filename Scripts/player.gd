@@ -1,17 +1,18 @@
 extends CharacterBody2D
 
-@export var WALK_SPEED = 20
-@export var SPRINT_SPEED = 100
-@export var JUMP_SPEED = -100
-@export var CLIMB_SPEED = -200
+@export var WALK_SPEED = 100
+@export var SPRINT_SPEED = 200
+@export var JUMP_SPEED = -250
+@export var CLIMB_SPEED = -20
 @export var MAX_ENERGY : float = 100
 @export var ENERGY_RECOVERY_RATE = 10
 @export var MAX_JUMPS = 2
-@export var GRAVITY = 100
+@export var DEFAULT_GRAVITY = 500
 @export var HEALTH = 100
 
 const INITIAL_SPRINT_CONSUMPTION_RATE = 10
 
+var current_gravity = 100
 var jump_speed = JUMP_SPEED
 var move_speed = WALK_SPEED
 var energy_recovery_rate = ENERGY_RECOVERY_RATE
@@ -23,8 +24,6 @@ var jump_count = 0
 
 var can_attack = true
 var attack_cooldown : float = 0.2
-var is_attacking = false
-var is_climbing = false
 
 func _ready():
 	pass
@@ -37,8 +36,7 @@ func _physics_process(dt):
 	# better than position += velocity * dt as that allows player to go through walls
 	move_and_slide()
 	
-	if !is_attacking:
-		player_animations()
+	player_animations()
 		
 	# increase energy every second
 	if $EnergyTime.is_stopped():
@@ -46,18 +44,23 @@ func _physics_process(dt):
 		
 
 func player_physics(dt):
-	# add gravity
-	if not is_on_floor():
-		velocity.y += GRAVITY * dt
-	else:
-		jump_count = 0
-	
-	if is_attacking:
+	if Global.is_attacking:
 		return
+		
+	if Global.is_climbing:
+		if Input.is_action_pressed("climb"):
+			current_gravity = 0
+			velocity.y = CLIMB_SPEED
+	else:
+		current_gravity = DEFAULT_GRAVITY
+		if not is_on_floor():
+			velocity.y += current_gravity * dt
+		else:
+			jump_count = 0
 	# controls
 	# strength corresponds to joystick controls (how far down the button is pressed or how much the analog is moved)
 	var horizontal_input = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-
+	
 	if Input.is_action_pressed("prone"):
 		# make collision shape y axis scale smaller and change sprite
 		pass
@@ -86,21 +89,13 @@ func _input(event : InputEvent) -> void: # "interrupt" like handling of inputs
 		print("Pause menu!") 
 	
 	if event.is_action_pressed("attack"):
-		if current_energy >= attack_consumption_rate and can_attack == true:
-			is_attacking = true
+		if current_energy >= attack_consumption_rate and can_attack == true and $AnimatedSprite2D.animation != "attack":
+			Global.is_attacking = true
 			can_attack = false
 			$AttackRecovery.start(attack_cooldown)
-			$AnimatedSprite2D.stop()
-			$AnimatedSprite2D.play("attack")
+
 			var facing = -1 if $AnimatedSprite2D.flip_h else 1
-			velocity.x = velocity.x + facing * SPRINT_SPEED/2
-			
-	if is_climbing == true:
-		if event.is_action_pressed("climb"):
-			GRAVITY = 100
-			velocity.y = CLIMB_SPEED
-	else:
-		GRAVITY = 200
+			velocity.x = velocity.x + facing * (float)(SPRINT_SPEED)/2
 	
 func player_animations():
 	
@@ -111,15 +106,23 @@ func player_animations():
 			$AnimatedSprite2D.play("fall")
 		return
 		
+	if Global.is_attacking:
+		if $AnimatedSprite2D.animation != "attack":
+			$AnimatedSprite2D.play("attack")
+		return
+		
+	if Global.is_climbing:
+		if $AnimatedSprite2D.animation != "climb":
+			$AnimatedSprite2D.play("climb")
+		return
+		
 	if Input.is_action_pressed("move_left") or Input.is_action_just_released("jump"):
 		$AnimatedSprite2D.flip_h = true
-		if !is_attacking:
-			$AnimatedSprite2D.play("run")
+		$AnimatedSprite2D.play("run")
 		
 	if Input.is_action_pressed("move_right") or Input.is_action_just_released("jump"):
 		$AnimatedSprite2D.flip_h = false
-		if !is_attacking:
-			$AnimatedSprite2D.play("run")
+		$AnimatedSprite2D.play("run")
 		
 	if !Input.is_anything_pressed():
 		$AnimatedSprite2D.play("idle")
@@ -144,5 +147,5 @@ func _on_attack_recovery_timeout() -> void:
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:
-	is_attacking = false
+	Global.is_attacking = false
 	$AnimatedSprite2D.play("idle")

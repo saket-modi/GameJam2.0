@@ -210,7 +210,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_igrcy")
 }],
-"loop": false,
+"loop": true,
 "name": &"climb",
 "speed": 5.0
 }, {
@@ -306,13 +306,14 @@ radius = 9.52381
 height = 30.9524
 
 [node name="Player" type="CharacterBody2D"]
+scale = Vector2(0.365978, 0.365978)
 script = ExtResource("1_cvnsp")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(16, 13)
 scale = Vector2(0.24266, 0.258919)
 sprite_frames = SubResource("SpriteFrames_gymyn")
-animation = &"fall"
+animation = &"climb"
 
 [node name="EnergyTime" type="Timer" parent="."]
 
