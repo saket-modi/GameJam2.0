@@ -7,7 +7,7 @@ extends CharacterBody2D
 @export var MAX_ENERGY : float = 100
 @export var ENERGY_RECOVERY_RATE = 10
 @export var MAX_JUMPS = 2
-@export var GRAVITY = 200
+@export var GRAVITY = 100
 @export var HEALTH = 100
 
 const INITIAL_SPRINT_CONSUMPTION_RATE = 10
@@ -47,11 +47,13 @@ func _physics_process(dt):
 
 func player_physics(dt):
 	# add gravity
-	#if not is_on_floor():
-		#velocity.y += GRAVITY * dt
-	#else:
-		#jump_count = 0
+	if not is_on_floor():
+		velocity.y += GRAVITY * dt
+	else:
+		jump_count = 0
 	
+	if is_attacking:
+		return
 	# controls
 	# strength corresponds to joystick controls (how far down the button is pressed or how much the analog is moved)
 	var horizontal_input = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
@@ -71,13 +73,12 @@ func player_physics(dt):
 		if sprint_consumption_rate > INITIAL_SPRINT_CONSUMPTION_RATE and $SprintRecovery.is_stopped():
 			$SprintRecovery.start()
 		
-	velocity = Vector2(horizontal_input, velocity.y) * Vector2(move_speed, jump_speed)
+	velocity.x = horizontal_input * move_speed
 	
 func _input(event : InputEvent) -> void: # "interrupt" like handling of inputs
 	if event.is_action_pressed("jump") and jump_count < MAX_JUMPS:
 		jump_count += 1
-		velocity.y += 1
-		$AnimatedSprite2D.play("up")
+		velocity.y += JUMP_SPEED
 		get_viewport().set_input_as_handled()
 		
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
@@ -89,7 +90,10 @@ func _input(event : InputEvent) -> void: # "interrupt" like handling of inputs
 			is_attacking = true
 			can_attack = false
 			$AttackRecovery.start(attack_cooldown)
+			$AnimatedSprite2D.stop()
 			$AnimatedSprite2D.play("attack")
+			var facing = -1 if $AnimatedSprite2D.flip_h else 1
+			velocity.x = velocity.x + facing * SPRINT_SPEED/2
 			
 	if is_climbing == true:
 		if event.is_action_pressed("climb"):
@@ -99,14 +103,23 @@ func _input(event : InputEvent) -> void: # "interrupt" like handling of inputs
 		GRAVITY = 200
 	
 func player_animations():
+	
+	if not is_on_floor():
+		if velocity.y < 0 and $AnimatedSprite2D.animation != "up":
+			$AnimatedSprite2D.play("up")
+		if velocity.y > 0 and $AnimatedSprite2D.animation != "fall": # falling
+			$AnimatedSprite2D.play("fall")
+		return
 		
 	if Input.is_action_pressed("move_left") or Input.is_action_just_released("jump"):
 		$AnimatedSprite2D.flip_h = true
-		$AnimatedSprite2D.play("run")
+		if !is_attacking:
+			$AnimatedSprite2D.play("run")
 		
 	if Input.is_action_pressed("move_right") or Input.is_action_just_released("jump"):
 		$AnimatedSprite2D.flip_h = false
-		$AnimatedSprite2D.play("run")
+		if !is_attacking:
+			$AnimatedSprite2D.play("run")
 		
 	if !Input.is_anything_pressed():
 		$AnimatedSprite2D.play("idle")
@@ -132,3 +145,4 @@ func _on_attack_recovery_timeout() -> void:
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	is_attacking = false
+	$AnimatedSprite2D.play("idle")
