@@ -1,0 +1,65 @@
+[gd_scene load_steps=10 format=3 uid="uid://c23iwfunh50wl"]
+
+[ext_resource type="Script" uid="uid://ca054s1a31i4s" path="res://Scripts/bomb_spawner.gd" id="1_b7sa4"]
+[ext_resource type="Texture2D" uid="uid://q1agsbfvxlw0" path="res://Assets/Kings and Pigs/Sprites/10-Cannon/Shoot (44x28).png" id="1_ui6oc"]
+[ext_resource type="Texture2D" uid="uid://2aujr4mufr6x" path="res://Assets/Kings and Pigs/Sprites/10-Cannon/Idle.png" id="2_b7sa4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ol7qh"]
+atlas = ExtResource("1_ui6oc")
+region = Rect2(0, 0, 44, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rv1ee"]
+atlas = ExtResource("1_ui6oc")
+region = Rect2(44, 0, 44, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uyu32"]
+atlas = ExtResource("1_ui6oc")
+region = Rect2(88, 0, 44, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uisvt"]
+atlas = ExtResource("1_ui6oc")
+region = Rect2(132, 0, 44, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gnwpg"]
+atlas = ExtResource("2_b7sa4")
+region = Rect2(0, 0, 44, 28)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_unkr7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ol7qh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rv1ee")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uyu32")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uisvt")
+}],
+"loop": true,
+"name": &"firing",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gnwpg")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="BombSpawner" type="Node2D"]
+script = ExtResource("1_b7sa4")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_unkr7")
+animation = &"firing"
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

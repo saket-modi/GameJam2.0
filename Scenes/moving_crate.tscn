@@ -26,7 +26,7 @@ curve = SubResource("Curve2D_dhete")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
 position = Vector2(-582.667, -176.71)
-rotation = 1.29799
+rotation = 1.298
 progress = 93.7066
 script = ExtResource("2_rtmct")
 

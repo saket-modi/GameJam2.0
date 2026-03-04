@@ -96,6 +96,8 @@ func _input(event : InputEvent) -> void: # "interrupt" like handling of inputs
 
 			var facing = -1 if $AnimatedSprite2D.flip_h else 1
 			velocity.x = velocity.x + facing * (float)(SPRINT_SPEED)/2
+			
+			get_viewport().set_input_as_handled()
 	
 func player_animations():
 	
