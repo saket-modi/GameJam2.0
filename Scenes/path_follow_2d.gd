@@ -1,6 +1,10 @@
 extends PathFollow2D
 
-@export var speed = 10
+@export var time = 3
+var speed
+
+func _ready():
+	speed = (float)(get_parent().curve.get_baked_length()/time)
 
 func _process(dt):
-	progress_ratio += speed / (dt * 500000) 
+	progress += speed * dt
