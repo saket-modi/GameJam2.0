@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=4 uid="uid://86g71remgf4t"]
+[gd_scene load_steps=10 format=4 uid="uid://86g71remgf4t"]
 
 [ext_resource type="Texture2D" uid="uid://bqt3ifu2oa2q2" path="res://Assets/Kings and Pigs/Sprites/14-TileSets/Terrain (32x32).png" id="1_dakn4"]
 [ext_resource type="PackedScene" uid="uid://bw1230vfoshdr" path="res://Scenes/player.tscn" id="2_dakn4"]
 [ext_resource type="PackedScene" uid="uid://cxroc13pfrarh" path="res://Scenes/ladder.tscn" id="3_lt7kh"]
 [ext_resource type="PackedScene" uid="uid://bpe7bemxo083r" path="res://Scenes/moving_crate.tscn" id="4_l3tba"]
+[ext_resource type="Script" uid="uid://dxelu8320euii" path="res://Scenes/path_follow_2d.gd" id="5_5v1xs"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lt7kh"]
 texture = ExtResource("1_dakn4")
@@ -1059,6 +1060,18 @@ terrain_set_0/terrain_2/name = "platform_floor"
 terrain_set_0/terrain_2/color = Color(0.46875, 0.5, 0.25, 1)
 sources/0 = SubResource("TileSetAtlasSource_lt7kh")
 
+[sub_resource type="Curve2D" id="Curve2D_iqbxe"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 27, -92, 0, 0, 0, 0, -37, -73, 0, 0, 0, 0, 1, -1)
+}
+point_count = 4
+
+[sub_resource type="Curve2D" id="Curve2D_5v1xs"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -341, -19, 0, 0, 0, 0, -397, -116, 0, 0, 0, 0, -558, -136, 0, 0, 0, 0, -370, -200, 0, 0, 0, 0, -400, -121, 0, 0, 0, 0, -341, -19)
+}
+point_count = 6
+
 [node name="Dungeon" type="Node"]
 
 [node name="Level" type="TileMapLayer" parent="."]
@@ -1088,12 +1101,37 @@ position = Vector2(250, 217)
 [node name="MovingCrates" type="Node2D" parent="."]
 
 [node name="MovingCrate" parent="MovingCrates" instance=ExtResource("4_l3tba")]
+position = Vector2(794.01, 408.565)
+rotation = -1.2925
 
 [node name="MovingCrate2" parent="MovingCrates" instance=ExtResource("4_l3tba")]
-position = Vector2(-512, -93)
+position = Vector2(379.136, 399.825)
+rotation = -2.09437
 
-[node name="Crate" parent="MovingCrates/MovingCrate2" index="0"]
-position = Vector2(875.261, 493.737)
+[node name="CratePaths" type="Node2D" parent="."]
 
-[editable path="MovingCrates/MovingCrate"]
-[editable path="MovingCrates/MovingCrate2"]
+[node name="Path1" type="Path2D" parent="CratePaths"]
+position = Vector2(767, 500)
+curve = SubResource("Curve2D_iqbxe")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="CratePaths/Path1"]
+position = Vector2(27.0102, -91.4351)
+rotation = -1.2925
+progress = 93.7066
+script = ExtResource("5_5v1xs")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="CratePaths/Path1/PathFollow2D"]
+remote_path = NodePath("../../../../MovingCrates/MovingCrate")
+
+[node name="Path2" type="Path2D" parent="CratePaths"]
+position = Vector2(767, 500)
+curve = SubResource("Curve2D_5v1xs")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="CratePaths/Path2"]
+position = Vector2(-387.864, -100.175)
+rotation = -2.09437
+progress = 93.7066
+script = ExtResource("5_5v1xs")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="CratePaths/Path2/PathFollow2D"]
+remote_path = NodePath("../../../../MovingCrates/MovingCrate2")
