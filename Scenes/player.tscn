@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://bw1230vfoshdr"]
+[gd_scene load_steps=66 format=3 uid="uid://bw1230vfoshdr"]
 
 [ext_resource type="Script" uid="uid://q24vmk8gpdrw" path="res://Scripts/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://6eu0583lq5tp" path="res://Assets/5_Cat_Attack-Sheet (1).png" id="2_3smsa"]
@@ -9,6 +9,9 @@
 [ext_resource type="Texture2D" uid="uid://cycrwun2qg4hc" path="res://Assets/cat_idle.png" id="6_tx1dd"]
 [ext_resource type="Texture2D" uid="uid://d0c1shhu3rery" path="res://Assets/cat_run.png" id="7_gymyn"]
 [ext_resource type="Texture2D" uid="uid://dhyeok3mpvpru" path="res://Assets/cat_jump.png" id="8_pu2lt"]
+[ext_resource type="Script" uid="uid://lfijtbn0oemt" path="res://GUI/health.gd" id="10_pu2lt"]
+[ext_resource type="Texture2D" uid="uid://h8b738w76lu4" path="res://Assets/Kings and Pigs/Sprites/12-Live and Coins/Big Heart Idle (18x14).png" id="11_ukyrk"]
+[ext_resource type="FontFile" uid="uid://bj5j4rr17l6lv" path="res://Assets/Fonts/short-baby-font/ShortBaby-Mg2w.ttf" id="12_7dp3o"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6t5aa"]
 atlas = ExtResource("2_3smsa")
@@ -339,6 +342,76 @@ animations = [{
 radius = 9.52381
 height = 30.9524
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7t2e"]
+atlas = ExtResource("11_ukyrk")
+region = Rect2(0, 0, 18, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nmr2m"]
+atlas = ExtResource("11_ukyrk")
+region = Rect2(18, 0, 18, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ax3m3"]
+atlas = ExtResource("11_ukyrk")
+region = Rect2(36, 0, 18, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vlem"]
+atlas = ExtResource("11_ukyrk")
+region = Rect2(54, 0, 18, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8eeqe"]
+atlas = ExtResource("11_ukyrk")
+region = Rect2(72, 0, 18, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5x828"]
+atlas = ExtResource("11_ukyrk")
+region = Rect2(90, 0, 18, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c1k8q"]
+atlas = ExtResource("11_ukyrk")
+region = Rect2(108, 0, 18, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e6mvm"]
+atlas = ExtResource("11_ukyrk")
+region = Rect2(126, 0, 18, 14)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_57lvd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7t2e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nmr2m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ax3m3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3vlem")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8eeqe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5x828")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c1k8q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e6mvm")
+}],
+"loop": true,
+"name": &"heart",
+"speed": 5.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ie7r7"]
+line_spacing = 0.0
+font = ExtResource("12_7dp3o")
+font_size = 26
+font_color = Color(0.829237, 0.144724, 0.34569, 1)
+
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(0.485977, 0.485977)
 script = ExtResource("1_cvnsp")
@@ -366,6 +439,41 @@ wait_time = 0.25
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(1.5, 1.5)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Health" type="ColorRect" parent="UI"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 140.0
+offset_bottom = 60.0
+color = Color(0.172549, 0.172549, 0.172549, 0.407843)
+script = ExtResource("10_pu2lt")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="UI/Health"]
+position = Vector2(25, 20)
+scale = Vector2(2.56, 2.56)
+sprite_frames = SubResource("SpriteFrames_57lvd")
+animation = &"heart"
+
+[node name="Label" type="Label" parent="UI/Health"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -58.0
+offset_top = -16.0
+offset_right = -18.0
+offset_bottom = 7.0
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(1.44, 1.44)
+text = "3"
+label_settings = SubResource("LabelSettings_ie7r7")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="timeout" from="EnergyTime" to="." method="_on_energy_time_timeout"]

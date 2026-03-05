@@ -30,7 +30,8 @@ var can_attack = true
 var attack_cooldown : float = 0.2
 
 func _ready():
-	pass
+	# Connect the update_lives signal to the _update_lives function in health.gd
+	update_lives.connect($UI/Health._update_lives)
 
 func _physics_process(dt):
 	
@@ -144,6 +145,16 @@ func take_damage():
 		
 		set_physics_process(false)
 		update_lives.emit(current_lives, MAX_LIVES)
+		
+func add_pickup(pickup):
+	if pickup == Global.States.HEART:
+		if current_lives < MAX_LIVES:
+			current_lives += 1
+			update_lives.emit(current_lives, MAX_LIVES)
+	elif pickup == Global.States.SCORE:
+		pass
+	elif pickup == Global.States.ATTACK:
+		pass
 
 func _on_sprint_timer_timeout() -> void:
 	# sprint consumption should increase at a rate of sqrt(sprint_time) * initial_rate per second
