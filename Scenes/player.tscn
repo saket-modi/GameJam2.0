@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=3 uid="uid://bw1230vfoshdr"]
+[gd_scene load_steps=72 format=3 uid="uid://bw1230vfoshdr"]
 
 [ext_resource type="Script" uid="uid://q24vmk8gpdrw" path="res://Scripts/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://6eu0583lq5tp" path="res://Assets/5_Cat_Attack-Sheet (1).png" id="2_3smsa"]
@@ -12,6 +12,8 @@
 [ext_resource type="Script" uid="uid://lfijtbn0oemt" path="res://GUI/health.gd" id="10_pu2lt"]
 [ext_resource type="Texture2D" uid="uid://h8b738w76lu4" path="res://Assets/Kings and Pigs/Sprites/12-Live and Coins/Big Heart Idle (18x14).png" id="11_ukyrk"]
 [ext_resource type="FontFile" uid="uid://bj5j4rr17l6lv" path="res://Assets/Fonts/short-baby-font/ShortBaby-Mg2w.ttf" id="12_7dp3o"]
+[ext_resource type="Script" uid="uid://jnhtjao4e8xs" path="res://GUI/menu.gd" id="13_7dp3o"]
+[ext_resource type="Texture2D" uid="uid://cbr7nl612left" path="res://Assets/Kings and Pigs/Sprites/01-King Human/Jump (78x58).png" id="14_h4iuc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6t5aa"]
 atlas = ExtResource("2_3smsa")
@@ -412,6 +414,47 @@ font = ExtResource("12_7dp3o")
 font_size = 26
 font_color = Color(0.829237, 0.144724, 0.34569, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_fd4e3"]
+font = ExtResource("12_7dp3o")
+font_size = 80
+
+[sub_resource type="Animation" id="Animation_qqcod"]
+resource_name = "ui_visibility"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GameOver/Menu:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_igrcy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GameOver/Menu:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fs7ks"]
+_data = {
+&"RESET": SubResource("Animation_igrcy"),
+&"ui_visibility": SubResource("Animation_qqcod")
+}
+
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(0.485977, 0.485977)
 script = ExtResource("1_cvnsp")
@@ -475,8 +518,77 @@ label_settings = SubResource("LabelSettings_ie7r7")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="GameOver" type="CanvasLayer" parent="."]
+process_mode = 3
+
+[node name="Menu" type="ColorRect" parent="GameOver"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.137255, 0.184314, 0.168627, 1)
+script = ExtResource("13_7dp3o")
+
+[node name="Container" type="ColorRect" parent="GameOver/Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 35.0
+offset_top = 27.0
+offset_right = -39.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.188235, 0.25098, 0.227451, 1)
+
+[node name="Label" type="Label" parent="GameOver/Menu/Container"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "You Died..."
+label_settings = SubResource("LabelSettings_fd4e3")
+
+[node name="Border" type="ColorRect" parent="GameOver/Menu/Container"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -150.0
+offset_right = 300.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.270588, 0.345098, 0.317647, 1)
+
+[node name="Restart" type="Button" parent="GameOver/Menu/Container/Border"]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 192.0
+offset_right = 578.0
+offset_bottom = 282.0
+text = "RESTART"
+icon = ExtResource("14_h4iuc")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+process_mode = 3
+libraries = {
+&"": SubResource("AnimationLibrary_fs7ks")
+}
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="timeout" from="EnergyTime" to="." method="_on_energy_time_timeout"]
 [connection signal="timeout" from="SprintTimer" to="." method="_on_sprint_timer_timeout"]
 [connection signal="timeout" from="SprintRecovery" to="." method="_on_sprint_recovery_timeout"]
 [connection signal="timeout" from="AttackRecovery" to="." method="_on_attack_recovery_timeout"]
+[connection signal="pressed" from="GameOver/Menu/Container/Border/Restart" to="GameOver/Menu" method="_on_restart_pressed"]

@@ -26,8 +26,6 @@ func _on_body_exited(body: Node2D) -> void:
 	
 func _input(event : InputEvent):
 	if event is InputEventKey and event.pressed and can_switch and event.keycode == KEY_E:
-		if $AnimatedSprite2D.is_playing():
-			return
 		get_tree().paused = true
 		$AnimatedSprite2D.play("closing")
 		plr.get_node("UI").visible = false

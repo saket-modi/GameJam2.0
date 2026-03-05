@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 signal update_lives(lives, max_lives)
+signal on_death
 
 @export var WALK_SPEED = 100
 @export var SPRINT_SPEED = 200
@@ -32,6 +33,7 @@ var attack_cooldown : float = 0.2
 func _ready():
 	# Connect the update_lives signal to the _update_lives function in health.gd
 	update_lives.connect($UI/Health._update_lives)
+	on_death.connect($GameOver/Menu._on_death)
 
 func _physics_process(dt):
 	
@@ -137,6 +139,8 @@ func player_animations():
 func take_damage():
 	if current_lives > 0:
 		current_lives -= 1
+		if current_lives == 0:
+			on_death.emit()
 		$AnimatedSprite2D.play("damage")
 		
 		var tween = create_tween()
