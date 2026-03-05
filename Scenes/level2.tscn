@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bw1230vfoshdr" path="res://Scenes/player.tscn" id="1_lgosu"]
 [ext_resource type="PackedScene" uid="uid://cxroc13pfrarh" path="res://Scenes/ladder.tscn" id="2_mhlpv"]
 [ext_resource type="PackedScene" uid="uid://bpe7bemxo083r" path="res://Scenes/moving_crate.tscn" id="3_ng020"]
-[ext_resource type="Script" uid="uid://dxelu8320euii" path="res://Scenes/path_follow_2d.gd" id="4_vn2uo"]
+[ext_resource type="Script" uid="uid://dxelu8320euii" path="res://Scripts/path_follow_2d.gd" id="4_vn2uo"]
 [ext_resource type="Texture2D" uid="uid://bqt3ifu2oa2q2" path="res://Assets/Kings and Pigs/Sprites/14-TileSets/Terrain (32x32).png" id="5_mtqcm"]
 [ext_resource type="TileSet" uid="uid://cr23k72y5sp7q" path="res://TileSets/dungeon_bg.tres" id="6_mmf1u"]
 [ext_resource type="Texture2D" uid="uid://c8gip6mtxnje6" path="res://Assets/Kings and Pigs/Sprites/14-TileSets/Decorations (32x32).png" id="7_vn460"]

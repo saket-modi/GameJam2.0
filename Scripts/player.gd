@@ -1,14 +1,17 @@
 extends CharacterBody2D
 
+signal update_lives(lives, max_lives)
+
 @export var WALK_SPEED = 100
 @export var SPRINT_SPEED = 200
 @export var JUMP_SPEED = -250
 @export var CLIMB_SPEED = -20
 @export var MAX_ENERGY : float = 100
 @export var ENERGY_RECOVERY_RATE = 10
-@export var MAX_JUMPS = 2
+@export var MAX_JUMPS = 1
 @export var DEFAULT_GRAVITY = 500
 @export var HEALTH = 100
+@export var MAX_LIVES = 3
 
 const INITIAL_SPRINT_CONSUMPTION_RATE = 10
 
@@ -21,6 +24,7 @@ var attack_consumption_rate : float = 5
 var sprint_consumption_rate : float = INITIAL_SPRINT_CONSUMPTION_RATE # rate of consumption of energy while sprinting (in energy/second)
 var sprint_time : float = 0.0
 var jump_count = 0
+var current_lives = 3
 
 var can_attack = true
 var attack_cooldown : float = 0.2
@@ -128,6 +132,18 @@ func player_animations():
 		
 	if !Input.is_anything_pressed():
 		$AnimatedSprite2D.play("idle")
+		
+func take_damage():
+	if current_lives > 0:
+		current_lives -= 1
+		$AnimatedSprite2D.play("damage")
+		
+		var tween = create_tween()
+		tween.tween_property($AnimatedSprite2D, "modulate", Color.RED, 0.1)
+		tween.tween_property($AnimatedSprite2D, "modulate", Color.WHITE, 0.1)
+		
+		set_physics_process(false)
+		update_lives.emit(current_lives, MAX_LIVES)
 
 func _on_sprint_timer_timeout() -> void:
 	# sprint consumption should increase at a rate of sqrt(sprint_time) * initial_rate per second
@@ -150,4 +166,5 @@ func _on_attack_recovery_timeout() -> void:
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	Global.is_attacking = false
+	set_physics_process(true)
 	$AnimatedSprite2D.play("idle")

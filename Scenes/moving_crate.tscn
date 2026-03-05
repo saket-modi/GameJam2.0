@@ -1,34 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://bpe7bemxo083r"]
+[gd_scene load_steps=4 format=3 uid="uid://bpe7bemxo083r"]
 
 [ext_resource type="Texture2D" uid="uid://cxhmcomu6fnug" path="res://Assets/Kings and Pigs/Sprites/08-Box/Idle.png" id="1_dhete"]
-[ext_resource type="Script" uid="uid://dxelu8320euii" path="res://Scenes/path_follow_2d.gd" id="2_rtmct"]
+[ext_resource type="Script" uid="uid://d1c2u0kju4yjp" path="res://Scripts/moving_crate.gd" id="1_rtmct"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_k5xic"]
-size = Vector2(20, 16)
-
-[sub_resource type="Curve2D" id="Curve2D_dhete"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, -495, -160, 0, 0, 0, 0, -584, -179, 0, 0, 0, 0, -548, -118, 0, 0, 0, 0, -477, -132, 0, 0, 0, 0, -495, -160)
-}
-point_count = 5
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_skx7h"]
+size = Vector2(21.9565, 17.3913)
 
 [node name="MovingCrate" type="AnimatableBody2D"]
+script = ExtResource("1_rtmct")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_k5xic")
+position = Vector2(-0.900004, 0)
+scale = Vector2(0.919999, 0.919999)
+shape = SubResource("RectangleShape2D_skx7h")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_dhete")
-
-[node name="Path2D" type="Path2D" parent="."]
-position = Vector2(767, 500)
-curve = SubResource("Curve2D_dhete")
-
-[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
-position = Vector2(-582.667, -176.71)
-rotation = 1.298
-progress = 93.7066
-script = ExtResource("2_rtmct")
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D"]
-remote_path = NodePath("../../..")
