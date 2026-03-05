@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://86g71remgf4t"]
+[gd_scene load_steps=22 format=4 uid="uid://86g71remgf4t"]
 
 [ext_resource type="PackedScene" uid="uid://bw1230vfoshdr" path="res://Scenes/player.tscn" id="1_2a60c"]
 [ext_resource type="PackedScene" uid="uid://cxroc13pfrarh" path="res://Scenes/ladder.tscn" id="2_4iphx"]
@@ -7,6 +7,7 @@
 [ext_resource type="TileSet" uid="uid://cr23k72y5sp7q" path="res://TileSets/dungeon_bg.tres" id="6_cpkqv"]
 [ext_resource type="PackedScene" uid="uid://c23iwfunh50wl" path="res://Scenes/bomb_spawner.tscn" id="7_2a60c"]
 [ext_resource type="Texture2D" uid="uid://c8gip6mtxnje6" path="res://Assets/Kings and Pigs/Sprites/14-TileSets/Decorations (32x32).png" id="7_d1mwp"]
+[ext_resource type="PackedScene" uid="uid://c7l16rc5tqo7v" path="res://Scenes/pickup.tscn" id="8_4iphx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lt7kh"]
 texture = ExtResource("5_rqhku")
@@ -1672,8 +1673,8 @@ remote_path = NodePath("../../../../MovingCrates/MovingCrate2")
 [node name="MovingCrates" type="Node2D" parent="."]
 
 [node name="MovingCrate" parent="MovingCrates" node_paths=PackedStringArray("crate_path", "crate_path_follow") instance=ExtResource("3_jgkgd")]
-position = Vector2(440, 482)
-rotation = 0.928913
+position = Vector2(818, 510)
+rotation = 1.28207
 scale = Vector2(1.44062, -1.14755)
 crate_path = NodePath("../../CratePaths/Path2D")
 crate_path_follow = NodePath("../../CratePaths/Path2D/PathFollow2D")
@@ -1684,3 +1685,26 @@ rotation = 0.928913
 scale = Vector2(1.44062, -1.14755)
 crate_path = NodePath("../../CratePaths/Path2D2")
 crate_path_follow = NodePath("../../CratePaths/Path2D2/PathFollow2D")
+
+[node name="Pickups" type="Node2D" parent="."]
+
+[node name="Pickup" parent="Pickups" instance=ExtResource("8_4iphx")]
+position = Vector2(140, 598)
+state = 2
+
+[node name="Pickup2" parent="Pickups" instance=ExtResource("8_4iphx")]
+position = Vector2(282, 420)
+
+[node name="Pickup3" parent="Pickups" instance=ExtResource("8_4iphx")]
+position = Vector2(864, 129)
+
+[node name="Pickup4" parent="Pickups" instance=ExtResource("8_4iphx")]
+position = Vector2(400, 129)
+state = 1
+
+[node name="Pickup5" parent="Pickups" instance=ExtResource("8_4iphx")]
+position = Vector2(675, 321)
+state = 2
+
+[node name="Pickup6" parent="Pickups" instance=ExtResource("8_4iphx")]
+position = Vector2(208, 226)
