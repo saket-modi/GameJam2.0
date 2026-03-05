@@ -1,15 +1,11 @@
 extends Node2D
 
+@export var bomb_path : PathFollow2D
+@export var bomb_animation : AnimationPlayer
 var bomb : PackedScene = preload("res://Scenes/bomb.tscn")
-var current_scene_path
-var bomb_path
-var bomb_animation
 
 func _ready():
 	$AnimatedSprite2D.play("idle")
-	var current_scene_path = Global.current_scene
-	var bomb_path = current_scene_path + "/BombPath/Path2D/PathFollow2D"
-	var bomb_animation = current_scene_path + "/BombPath/Path2D/AnimationPlayer"
 	
 func create_bomb():
 	var temp = bomb.instantiate()
@@ -17,6 +13,20 @@ func create_bomb():
 	return temp
 
 func _on_timer_timeout() -> void:
-	$AnimatedSprite2D.play("idle")
+	if !Global.is_bomb_moving:
+		# forceful cleanup
+		# safety net in case bomb.gd cannot call queue_free()
+		for child in bomb_path.get_children():
+			child.queue_free()
+			bomb_animation.stop()
+	
 	if bomb_path.get_child_count() <= 0:
-		bomb_path.add_child(create_bomb())
+		var new_bomb = create_bomb()
+		new_bomb.bomb_exploded.connect(_on_bomb_exploded)
+		
+		bomb_path.add_child(new_bomb)
+		bomb_animation.play("bomb_movement")
+		Global.is_bomb_moving = true
+
+func _on_bomb_exploded():
+	bomb_animation.stop()

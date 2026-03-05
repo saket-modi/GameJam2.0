@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=4 uid="uid://86g71remgf4t"]
+[gd_scene load_steps=18 format=4 uid="uid://86g71remgf4t"]
 
 [ext_resource type="PackedScene" uid="uid://bw1230vfoshdr" path="res://Scenes/player.tscn" id="1_2a60c"]
 [ext_resource type="PackedScene" uid="uid://cxroc13pfrarh" path="res://Scenes/ladder.tscn" id="2_4iphx"]
 [ext_resource type="PackedScene" uid="uid://bpe7bemxo083r" path="res://Scenes/moving_crate.tscn" id="3_jgkgd"]
 [ext_resource type="Texture2D" uid="uid://bqt3ifu2oa2q2" path="res://Assets/Kings and Pigs/Sprites/14-TileSets/Terrain (32x32).png" id="5_rqhku"]
 [ext_resource type="TileSet" uid="uid://cr23k72y5sp7q" path="res://TileSets/dungeon_bg.tres" id="6_cpkqv"]
+[ext_resource type="PackedScene" uid="uid://c23iwfunh50wl" path="res://Scenes/bomb_spawner.tscn" id="7_2a60c"]
 [ext_resource type="Texture2D" uid="uid://c8gip6mtxnje6" path="res://Assets/Kings and Pigs/Sprites/14-TileSets/Decorations (32x32).png" id="7_d1mwp"]
 
 [sub_resource type="Curve2D" id="Curve2D_2a60c"]
@@ -1141,6 +1142,21 @@ _data = {
 }
 point_count = 10
 
+[sub_resource type="Animation" id="Animation_4iphx"]
+length = 100.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 100),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
 [sub_resource type="Animation" id="Animation_2a60c"]
 resource_name = "bomb_movement"
 length = 5.0
@@ -1155,21 +1171,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 1.0]
-}
-
-[sub_resource type="Animation" id="Animation_4iphx"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PathFollow2D:progress_ratio")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jgkgd"]
@@ -1253,11 +1254,18 @@ libraries = {
 &"": SubResource("AnimationLibrary_jgkgd")
 }
 
-[node name="BombReceiver" type="Area2D" parent="."]
+[node name="BombReceiver" type="StaticBody2D" parent="."]
 position = Vector2(59, 557)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BombReceiver"]
 position = Vector2(0, 20.5)
+scale = Vector2(1.88, 1.88)
 shape = SubResource("RectangleShape2D_didp7")
+
+[node name="BombSpawner" parent="." node_paths=PackedStringArray("bomb_path", "bomb_animation") instance=ExtResource("7_2a60c")]
+position = Vector2(498, 129)
+scale = Vector2(1.56, 1.56)
+bomb_path = NodePath("../BombPath/Path2D/PathFollow2D")
+bomb_animation = NodePath("../BombPath/Path2D/AnimationPlayer")
 
 [editable path="MovingCrates/MovingCrate2"]
