@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://86g71remgf4t"]
+[gd_scene load_steps=24 format=4 uid="uid://86g71remgf4t"]
 
 [ext_resource type="PackedScene" uid="uid://bw1230vfoshdr" path="res://Scenes/player.tscn" id="1_2a60c"]
 [ext_resource type="PackedScene" uid="uid://cxroc13pfrarh" path="res://Scenes/ladder.tscn" id="2_4iphx"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://c23iwfunh50wl" path="res://Scenes/bomb_spawner.tscn" id="7_2a60c"]
 [ext_resource type="Texture2D" uid="uid://c8gip6mtxnje6" path="res://Assets/Kings and Pigs/Sprites/14-TileSets/Decorations (32x32).png" id="7_d1mwp"]
 [ext_resource type="PackedScene" uid="uid://c7l16rc5tqo7v" path="res://Scenes/pickup.tscn" id="8_4iphx"]
+[ext_resource type="PackedScene" uid="uid://dd6wrnsqjawma" path="res://Scenes/level_door.tscn" id="9_jgkgd"]
+[ext_resource type="PackedScene" uid="uid://bhqu2c2c0ph35" path="res://Scenes/level2.tscn" id="10_bs12r"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lt7kh"]
 texture = ExtResource("5_rqhku")
@@ -1708,3 +1710,7 @@ state = 2
 
 [node name="Pickup6" parent="Pickups" instance=ExtResource("8_4iphx")]
 position = Vector2(208, 226)
+
+[node name="LevelDoor" parent="." instance=ExtResource("9_jgkgd")]
+position = Vector2(215, 116)
+next_scene = ExtResource("10_bs12r")

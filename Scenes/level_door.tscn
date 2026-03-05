@@ -1,0 +1,228 @@
+[gd_scene load_steps=23 format=3 uid="uid://dd6wrnsqjawma"]
+
+[ext_resource type="Texture2D" uid="uid://cgchpcxhrvybg" path="res://Assets/Kings and Pigs/Sprites/11-Door/Closiong (46x56).png" id="1_brs36"]
+[ext_resource type="Script" uid="uid://cbpgmhvg18ndv" path="res://Scripts/level_door.gd" id="1_nnlv5"]
+[ext_resource type="Texture2D" uid="uid://88efc2i2duje" path="res://Assets/Kings and Pigs/Sprites/11-Door/Idle.png" id="2_uhixa"]
+[ext_resource type="Texture2D" uid="uid://bia1pft7be5oo" path="res://Assets/Kings and Pigs/Sprites/11-Door/Opening (46x56).png" id="3_78t0y"]
+[ext_resource type="FontFile" uid="uid://bj5j4rr17l6lv" path="res://Assets/Fonts/short-baby-font/ShortBaby-Mg2w.ttf" id="4_u2d52"]
+[ext_resource type="Texture2D" uid="uid://cbr7nl612left" path="res://Assets/Kings and Pigs/Sprites/01-King Human/Jump (78x58).png" id="5_nnlv5"]
+[ext_resource type="Texture2D" uid="uid://i14wa6jq4gq" path="res://Assets/Kings and Pigs/Sprites/02-King Pig/Fall (38x28).png" id="6_0d1s7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u2d52"]
+size = Vector2(46, 55)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nnlv5"]
+atlas = ExtResource("1_brs36")
+region = Rect2(0, 0, 46, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0d1s7"]
+atlas = ExtResource("1_brs36")
+region = Rect2(46, 0, 46, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cgh1x"]
+atlas = ExtResource("1_brs36")
+region = Rect2(92, 0, 46, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fugfo"]
+atlas = ExtResource("2_uhixa")
+region = Rect2(0, 0, 46, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_buweq"]
+atlas = ExtResource("3_78t0y")
+region = Rect2(0, 0, 46, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lmdti"]
+atlas = ExtResource("3_78t0y")
+region = Rect2(46, 0, 46, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_be0wq"]
+atlas = ExtResource("3_78t0y")
+region = Rect2(92, 0, 46, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bfisb"]
+atlas = ExtResource("3_78t0y")
+region = Rect2(138, 0, 46, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4hp25"]
+atlas = ExtResource("3_78t0y")
+region = Rect2(184, 0, 46, 56)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lwp6k"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nnlv5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0d1s7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cgh1x")
+}],
+"loop": false,
+"name": &"closing",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fugfo")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_buweq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lmdti")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_be0wq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bfisb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4hp25")
+}],
+"loop": false,
+"name": &"opening",
+"speed": 5.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_cgh1x"]
+font = ExtResource("4_u2d52")
+font_size = 80
+
+[sub_resource type="Animation" id="Animation_fugfo"]
+resource_name = "ui_visibility"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Menu:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_buweq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Menu:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lmdti"]
+_data = {
+&"RESET": SubResource("Animation_buweq"),
+&"ui_visibility": SubResource("Animation_fugfo")
+}
+
+[node name="LevelDoor" type="Area2D"]
+process_mode = 3
+script = ExtResource("1_nnlv5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_u2d52")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_lwp6k")
+animation = &"idle"
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Menu" type="ColorRect" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.137255, 0.184314, 0.168627, 1)
+
+[node name="Container" type="ColorRect" parent="UI/Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 35.0
+offset_top = 27.0
+offset_right = -39.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.188235, 0.25098, 0.227451, 1)
+
+[node name="Label" type="Label" parent="UI/Menu/Container"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Level Complete!"
+label_settings = SubResource("LabelSettings_cgh1x")
+
+[node name="Border" type="ColorRect" parent="UI/Menu/Container"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -150.0
+offset_right = 300.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.270588, 0.345098, 0.317647, 1)
+
+[node name="Restart" type="Button" parent="UI/Menu/Container/Border"]
+layout_mode = 0
+offset_left = 319.0
+offset_top = 192.0
+offset_right = 579.0
+offset_bottom = 282.0
+text = "RESTART"
+icon = ExtResource("5_nnlv5")
+
+[node name="Continue" type="Button" parent="UI/Menu/Container/Border"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 23.0
+offset_top = -108.0
+offset_right = 283.0
+offset_bottom = -18.0
+grow_vertical = 0
+text = "CONTINUE"
+icon = ExtResource("6_0d1s7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_lmdti")
+}
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="pressed" from="UI/Menu/Container/Border/Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="UI/Menu/Container/Border/Continue" to="." method="_on_continue_pressed"]

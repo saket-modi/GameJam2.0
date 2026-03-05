@@ -1,24 +1,10 @@
-[gd_scene load_steps=14 format=4 uid="uid://bhqu2c2c0ph35"]
+[gd_scene load_steps=10 format=4 uid="uid://bhqu2c2c0ph35"]
 
 [ext_resource type="PackedScene" uid="uid://bw1230vfoshdr" path="res://Scenes/player.tscn" id="1_lgosu"]
 [ext_resource type="PackedScene" uid="uid://cxroc13pfrarh" path="res://Scenes/ladder.tscn" id="2_mhlpv"]
-[ext_resource type="PackedScene" uid="uid://bpe7bemxo083r" path="res://Scenes/moving_crate.tscn" id="3_ng020"]
-[ext_resource type="Script" uid="uid://dxelu8320euii" path="res://Scripts/path_follow_2d.gd" id="4_vn2uo"]
 [ext_resource type="Texture2D" uid="uid://bqt3ifu2oa2q2" path="res://Assets/Kings and Pigs/Sprites/14-TileSets/Terrain (32x32).png" id="5_mtqcm"]
 [ext_resource type="TileSet" uid="uid://cr23k72y5sp7q" path="res://TileSets/dungeon_bg.tres" id="6_mmf1u"]
 [ext_resource type="Texture2D" uid="uid://c8gip6mtxnje6" path="res://Assets/Kings and Pigs/Sprites/14-TileSets/Decorations (32x32).png" id="7_vn460"]
-
-[sub_resource type="Curve2D" id="Curve2D_iqbxe"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 27, -92, 0, 0, 0, 0, -37, -73, 0, 0, 0, 0, 1, -1)
-}
-point_count = 4
-
-[sub_resource type="Curve2D" id="Curve2D_5v1xs"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, -341, -19, 0, 0, 0, 0, -397, -116, 0, 0, 0, 0, -558, -136, 0, 0, 0, 0, -370, -200, 0, 0, 0, 0, -400, -121, 0, 0, 0, 0, -341, -19)
-}
-point_count = 6
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lt7kh"]
 texture = ExtResource("5_mtqcm")
@@ -1164,44 +1150,6 @@ position = Vector2(629, 313)
 
 [node name="Ladder5" parent="Ladders" instance=ExtResource("2_mhlpv")]
 position = Vector2(250, 217)
-
-[node name="MovingCrates" type="Node2D" parent="."]
-
-[node name="MovingCrate" parent="MovingCrates" instance=ExtResource("3_ng020")]
-position = Vector2(794.01, 408.565)
-rotation = -1.2925
-
-[node name="MovingCrate2" parent="MovingCrates" instance=ExtResource("3_ng020")]
-position = Vector2(379.136, 399.825)
-rotation = -2.09437
-
-[node name="CratePaths" type="Node2D" parent="."]
-
-[node name="Path1" type="Path2D" parent="CratePaths"]
-position = Vector2(767, 500)
-curve = SubResource("Curve2D_iqbxe")
-
-[node name="PathFollow2D" type="PathFollow2D" parent="CratePaths/Path1"]
-position = Vector2(27.0102, -91.4351)
-rotation = -1.2925
-progress = 93.7066
-script = ExtResource("4_vn2uo")
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="CratePaths/Path1/PathFollow2D"]
-remote_path = NodePath("../../../../MovingCrates/MovingCrate")
-
-[node name="Path2" type="Path2D" parent="CratePaths"]
-position = Vector2(767, 500)
-curve = SubResource("Curve2D_5v1xs")
-
-[node name="PathFollow2D" type="PathFollow2D" parent="CratePaths/Path2"]
-position = Vector2(-387.864, -100.175)
-rotation = -2.09437
-progress = 93.7066
-script = ExtResource("4_vn2uo")
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="CratePaths/Path2/PathFollow2D"]
-remote_path = NodePath("../../../../MovingCrates/MovingCrate2")
 
 [node name="Tilemaps" type="Node2D" parent="."]
 
