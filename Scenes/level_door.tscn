@@ -96,6 +96,21 @@ animations = [{
 font = ExtResource("4_u2d52")
 font_size = 80
 
+[sub_resource type="Animation" id="Animation_buweq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Menu:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="Animation" id="Animation_fugfo"]
 resource_name = "ui_visibility"
 length = 0.5
@@ -110,21 +125,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_buweq"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("UI/Menu:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lmdti"]
@@ -146,6 +146,7 @@ sprite_frames = SubResource("SpriteFrames_lwp6k")
 animation = &"idle"
 
 [node name="UI" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="Menu" type="ColorRect" parent="UI"]
 anchors_preset = 15

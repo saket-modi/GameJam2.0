@@ -273,6 +273,6 @@ shape = SubResource("CircleShape2D_cnuki")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1.76, 1.76)
 sprite_frames = SubResource("SpriteFrames_30q7d")
-animation = &"score"
+animation = &"heart"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
